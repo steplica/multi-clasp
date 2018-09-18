@@ -1,0 +1,33 @@
+{
+  "name": "multi-clasp",
+  "version": "1.0.0",
+  "description": "multi-clasp ===========",
+  "main": "index.js",
+  "dependencies": {
+    "@google/clasp": "1.5.3"
+  },
+  "author": "Steve Teplica",
+  "license": "ISC",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sypherio/multi-clasp.git"
+  },
+  "keywords": [
+    "clasp",
+    "apps",
+    "script",
+    "multiple",
+    "projects"
+  ],
+  "bugs": {
+    "url": "https://github.com/Sypherio/multi-clasp/issues"
+  },
+  "homepage": "https://github.com/Sypherio/multi-clasp#readme",
+  "bin": {
+    "multi-clasp": "index.js"
+  }
+}
