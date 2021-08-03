@@ -1,7 +1,8 @@
 #! /usr/bin/env node
 
 const fs = require('fs');
-const { exec } = require('child_process');
+const util = require('util');
+const exec = util.promisify(require('child_process').exec);
 
 const rootCommand = process.argv[2];
 const commandOptions =process.argv.slice(3);
@@ -12,17 +13,26 @@ const UTF_8 = 'utf8';
 
 const clasps = JSON.parse(fs.readFileSync(MULTICLASP_FILENAME, UTF_8));
 ({
-  push(commandOptions) {
-    clasps.forEach(clasp => {
-      fs.writeFile(CLASP_FILENAME, JSON.stringify(clasp, null, 2) , UTF_8);
-      exec('clasp push', (error, stdout, stderr) => {
-        if (error) {
-          return console.log(stderr);
-        }
-        console.log(stdout);
-      });
+  async push(commandOptions) {
+      for (let i = 0, len = clasps.length; i < len; i++) {
+          let clasp=clasps[i];
 
-      fs.unlink(CLASP_FILENAME);
-    });
+          await fs.writeFile(CLASP_FILENAME, JSON.stringify(clasp, null, 2) , UTF_8, async (err) => {
+              if (err) throw err;
+          });
+          console.log('Pushing scriptId:', clasp.scriptId);
+
+          
+          try {
+              const { stdout, stderr } = await exec('clasp push');
+              console.log('stdout:', stdout);
+          } catch (e) {
+              console.error(e); // should contain code (exit code) and signal (that caused the termination).
+          }
+      }
+
+      fs.unlink(CLASP_FILENAME, (err) => {
+          if (err) throw err;
+      });
   },
 })[rootCommand](commandOptions);
