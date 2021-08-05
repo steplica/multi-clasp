@@ -28,6 +28,7 @@ const clasps = JSON.parse(fs.readFileSync(MULTICLASP_FILENAME, UTF_8));
               console.log('stdout:', stdout);
           } catch (e) {
               console.error(e); // should contain code (exit code) and signal (that caused the termination).
+              return false;
           }
       }
 
